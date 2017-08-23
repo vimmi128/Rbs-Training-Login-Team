@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+
+
+<title>heyy</title>
+</head>
+<body>
+
+	<div ng-app='app' ng-controller="CtrlChecklist">
+		<label ng-repeat="(category,category_val) in categories">
+			
+		   <input type="checkbox" ng-model="categories[category]" ng-change="categoryToggle(category,category_val)">{{category}}</input>
+		   <ul>
+		   		<div ng-repeat="(product,product_val) in products[category]">
+		   			
+		   			<input type="checkbox" ng-model="products[category][product]" ng-change="productToggle(category,product)">{{product}} </input>
+		   		</div>
+		   </ul>   
+		  
+		</label>
+		 <p><button ng-click="add()">Add </button></p>
+		 <p><button ng-click="addAll()">Add ALL </button></p>
+		
+	</div>
+	
+	
+	
+	<script>
+		var app = angular.module("app", [  ]);
+		app.controller('CtrlChecklist', function($scope) {
+			$scope.categories = {
+					"Electronics":false,
+					"Appliances":false,
+					"Clothing":false
+			}
+			 $scope.products = {
+					"Electronics":{
+						"Camera":false,
+						"Mobile":false
+					},
+					"Appliances":{
+						"Refrigerator":false,
+						"Microwave":false
+					},
+					"Clothing":{
+						"Shirts":false,
+						"Pants":false
+					}
+			}
+			
+			//Implementing fucntion for category toggle
+			$scope.categoryToggle = function(category,category_val){
+				
+			for(item in $scope.products[category])
+				{
+					
+					$scope.products[category][item] = category_val;
+				}
+			}
+			
+			//Implementing function for product toggle
+			$scope.productToggle = function(category,product)
+			{
+				$scope.products[category][product] = !$scope.products[category][product]; 
+			}
+				
+			//Implementing Add function
+			$scope.arr = [];
+			$scope.add= function(){				
+				$scope.arr=[];
+				console.log('hey! this is only add');
+			    for(item in $scope.products){
+					for(x in $scope.products[item]){
+					console.log(x,$scope.products[item][x]);
+				    		
+					if($scope.products[item][x]==true){
+					    $scope.arr.push(x);
+					 }		
+				    }				
+			    }
+			   //showing only the selected products ('add' button)
+			   console.log($scope.arr); 
+			}
+			
+			// Implementing Add All function			
+			$scope.addAll= function(){				
+				$scope.arr=[];				
+				 for(item in $scope.categories){										
+					 $scope.categories[item]=true;
+					 console.log(item , $scope.categories[item]);
+				 }
+			    for(item in $scope.products){					
+			    	for(x in $scope.products[item]){									    		
+					$scope.products[item][x]=true;
+					    $scope.arr.push(x);					 		
+				    }				
+			    }
+			    //showing all the  products ('add all' button)
+			   console.log($scope.arr); 
+			}
+			    
+			    
+		
+		});
+	</script>
+</body>
+</html>
